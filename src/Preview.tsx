@@ -19,7 +19,7 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
             <div className="text-gray-500">Invoice No:</div>
             <div className="text-gray-700">
               <span>
-                {customAlphabet("QWERTYUIOPASDFGHJKLZXCVBNM1234567890", 4)()}
+                {customAlphabet("QWERTYUIOPASDFGHJKLZXCVBNM1234567890", 6)()}
               </span>
             </div>
           </div>
@@ -32,7 +32,7 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
         </div>
         <div className="flex gap-2">
           <div className="text-gray-500">Name:</div>
-          <div className="font-medium text-gray-900">{partyName}</div>
+          <div className="font-medium text-gray-900 uppercase">{partyName}</div>
         </div>
         <div className="mt-3">
           <table className="min-w-full border divide-y divide-gray-300">
@@ -50,7 +50,7 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
                   scope="col"
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
                 >
-                  QTY
+                  Qty
                 </th>
                 <th
                   key={`label-price`}
@@ -72,7 +72,7 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
                 <tr key={item.id} className="divide-x">
                   <td
                     key={`${item.id}-desc`}
-                    className="whitespace-nowrap p-4 text-sm font-medium text-gray-900"
+                    className="uppercase whitespace-nowrap p-4 text-sm font-medium text-gray-900"
                   >
                     {item.description}
                   </td>
@@ -123,6 +123,23 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
             </dd>
           </div>
         )}
+        <div className="mt-4 border-t gap-x-4 py-3">
+          <h4 className="heading-4 underline uppercase">Banking Details</h4>
+          <div className="text-gray-900">
+            <div>
+              Bank: <b>Axis Bank</b>
+            </div>
+            <div>
+              Account Name: <b>SOMPURA VIDHI SUDHIRKUMAR</b>
+            </div>
+            <div>
+              Account Number: <b>923010029269580</b>
+            </div>
+            <div>
+              IFSC Code: <b>UTIB0004228</b>
+            </div>
+          </div>
+        </div>
         <div className="mt-4 border-t flex justify-center gap-x-4 py-3">
           <div className="text-center font-medium text-gray-500">
             This is computer generated invoice, no need of signature.
