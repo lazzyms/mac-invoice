@@ -7,7 +7,11 @@ export default {
   ],
   darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        script: ["Dancing Script", "sans-serif"],
+      },
+    },
   },
   plugins: [import("@tailwindcss/forms")],
 };

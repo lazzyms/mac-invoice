@@ -9,13 +9,14 @@ interface IPreview {
   items: IItem[];
   remarks: string;
   showForm: any;
+  type?: string | null;
 }
-const Preview = ({ date, partyName, items, remarks }: IPreview) => {
+const Preview = ({ date, partyName, items, remarks, type }: IPreview) => {
   return (
     <>
-      <div className="mx-auto max-w-5xl p-4">
-        <div className="flex justify-between gap-4 mt-3 py-2 text-sm leading-6">
-          <div className="flex gap-2">
+      <div className="mx-auto max-w-5xl p-2">
+        <div className="flex justify-between gap-4 mt-2 py-2 text-sm leading-6">
+          <div className="flex gap-1">
             <div className="text-gray-500">Invoice No:</div>
             <div className="text-gray-700">
               <span>
@@ -23,45 +24,45 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
               </span>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <div className="text-gray-500">Invoice Date:</div>
             <div className="text-gray-700">
               <span>{date?.startDate?.toString()}</span>
             </div>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <div className="text-gray-500">Name:</div>
           <div className="font-medium text-gray-900 uppercase">{partyName}</div>
         </div>
-        <div className="mt-3">
+        <div className="mt-2">
           <table className="min-w-full border divide-y divide-gray-300">
             <thead>
               <tr className="divide-x">
                 <th
                   key={`label-desc`}
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                  className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
                 >
                   Name/Description
                 </th>
                 <th
                   key={`label-qty`}
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                  className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
                 >
                   Qty
                 </th>
                 <th
                   key={`label-price`}
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                  className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
                 >
                   Price (₹)
                 </th>
                 <th
                   key={`label-price`}
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                  className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
                 >
                   Total (₹)
                 </th>
@@ -101,7 +102,7 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
               <tr className="divide-x">
                 <td
                   colSpan={3}
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                  className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
                 >
                   Grand Total
                 </td>
@@ -116,33 +117,48 @@ const Preview = ({ date, partyName, items, remarks }: IPreview) => {
           </table>
         </div>
         {remarks && (
-          <div className="mt-4 border-t flex justify-between gap-x-4 py-3">
+          <div className="mt-2 border-t flex justify-between gap-x-4 py-2">
             <dt className="text-gray-500">Remarks:</dt>
             <dd className="flex items-start gap-x-2">
               <div className="font-medium text-gray-900">{remarks}</div>
             </dd>
           </div>
         )}
-        <div className="mt-4 border-t gap-x-4 py-3">
-          <h4 className="heading-4 underline uppercase">Banking Details</h4>
-          <div className="text-gray-900">
-            <div>
-              Bank: <b>Axis Bank</b>
-            </div>
-            <div>
-              Account Name: <b>SOMPURA VIDHI SUDHIRKUMAR</b>
-            </div>
-            <div>
-              Account Number: <b>923010029269580</b>
-            </div>
-            <div>
-              IFSC Code: <b>UTIB0004228</b>
-            </div>
+        <div className="page-break-inside-avoid">
+          <div className="mt-6 border-t gap-x-4 py-2">
+            {type === "mandm" ? (
+              <>
+                <h4 className="heading-4 underline uppercase">
+                  Payment Details
+                </h4>
+                <img src="/M&MQR.jpeg" className="w-40 h-50 rounded-lg" />
+              </>
+            ) : (
+              <>
+                <h4 className="heading-4 underline uppercase">
+                  Banking Details
+                </h4>
+                <div className="text-gray-900">
+                  <div>
+                    Bank: <b>Axis Bank</b>
+                  </div>
+                  <div>
+                    Account Name: <b>SOMPURA VIDHI SUDHIRKUMAR</b>
+                  </div>
+                  <div>
+                    Account Number: <b>923010029269580</b>
+                  </div>
+                  <div>
+                    IFSC Code: <b>UTIB0004228</b>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-        </div>
-        <div className="mt-4 border-t flex justify-center gap-x-4 py-3">
-          <div className="text-center font-medium text-gray-500">
-            This is computer generated invoice, no need of signature.
+          <div className="mt-4 border-t flex justify-center gap-x-4 py-3">
+            <div className="text-center font-medium text-gray-500">
+              This is computer generated invoice, no need of signature.
+            </div>
           </div>
         </div>
       </div>

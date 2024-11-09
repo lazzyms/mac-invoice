@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Form from "./Form";
 import { nanoid } from "nanoid";
@@ -25,6 +25,7 @@ const blankItem: IItem = {
   price: 0,
   isEdit: true,
 };
+
 function App() {
   const sp = new URLSearchParams(window.location.search);
   const [invoiceType] = useState(sp.get("type"));
@@ -37,6 +38,24 @@ function App() {
   const [items, setItems] = useState([blankItem]);
   const [remarks, setRemarks] = useState("");
 
+  useEffect(() => {
+    if (invoiceType) {
+      switch (invoiceType) {
+        case "mac":
+          document.title = "Invoice:Maulik Account Consultancy";
+          break;
+        case "mandm":
+          document.title = "Invoice:M&M Candles";
+          break;
+        default:
+          document.title = "Invoice:CA V S Sompura & Associates";
+          break;
+      }
+    } else {
+      document.title = "Invoice"; // Default title if no 'type' is in the URL
+    }
+  }, [invoiceType]);
+
   const handleValueChange = (newDate: DateValueType) => {
     setDate(newDate);
   };
@@ -47,7 +66,7 @@ function App() {
       items[items.length - 1].qty &&
       items[items.length - 1].price
     ) {
-      setItems([...items, blankItem]);
+      setItems([...items, { ...blankItem, id: nanoid(4) }]);
     }
   };
 
@@ -57,40 +76,39 @@ function App() {
 
   const toggleEdit = (id: string) => {
     setItems(
-      items.map((item) => {
-        if (item.id === id) {
-          item = { ...item, isEdit: !item.isEdit };
-        }
-        return item;
-      })
+      items.map((item) =>
+        item.id === id ? { ...item, isEdit: !item.isEdit } : item
+      )
     );
   };
 
   const handleChangeItem = (
     id: string,
-    field: string,
+    field: keyof IItem,
     value: string | number
   ) => {
     setItems(
-      items.map((item) => {
-        if (item.id === id) {
-          item = { ...item, [field]: value };
-        }
-        return item;
-      })
+      items.map((item) => (item.id === id ? { ...item, [field]: value } : item))
     );
   };
+
+  const resetForm = () => {
+    setPartyName("");
+    setDate({ startDate: null, endDate: null });
+    setItems([blankItem]);
+    setRemarks("");
+    showForm(true);
+  };
+
   return (
     <div className="m-4 border p-4 h-screen">
       <div className="mx-auto max-w-4xl pb-2 border-b">
         {invoiceType === "mac" ? (
           <div className="flex justify-between items-center">
             <div className="flex gap-2">
-              <div>
-                <h1 className="text-left text-4xl font-bold leading-7 text-cyan-800">
-                  Maulik Account Consultancy
-                </h1>
-              </div>
+              <h1 className="text-left text-4xl font-bold leading-7 text-cyan-800">
+                Maulik Account Consultancy
+              </h1>
             </div>
             <div className="flex flex-col items-end justify-end">
               <h3 className="text-gray-800 text-right">
@@ -103,18 +121,30 @@ function App() {
               </h3>
             </div>
           </div>
+        ) : invoiceType === "mandm" ? (
+          <div className="py-4 flex justify-between items-center">
+            <div className="flex gap-2 items-center">
+              <img src="/MMlogo.png" className="h-16 w-16" alt="M&M Logo" />
+              <h1 className="font-script text-left text-4xl font-bold leading-7 text-cyan-800">
+                M&M Candles
+              </h1>
+            </div>
+            <div className="flex flex-col items-end justify-end">
+              <h3 className="text-gray-800 text-right">
+                <a href="tel:7802995885">+91 7990089695</a>
+              </h3>
+              <h3 className="text-gray-800 text-right">
+                <a href="mailto:info@mandmcandles.com">info@mandmcandles.com</a>
+              </h3>
+            </div>
+          </div>
         ) : (
           <div className="py-4 flex justify-between items-center">
             <div className="flex gap-2">
-              <img src="/CALogo.png" className="h-16 w-20" />
-              <div>
-                <h1 className="text-left text-3xl font-bold leading-7 text-cyan-800">
-                  V S Sompura & Associates
-                </h1>
-                <h2 className="mt-2 text-left text-2xl font-semibold leading-7 text-slate-700">
-                  Chartered Accountants
-                </h2>
-              </div>
+              <img src="/CALogo.png" className="h-16 w-20" alt="CA Logo" />
+              <h1 className="text-left text-3xl font-bold leading-7 text-cyan-800">
+                V S Sompura & Associates
+              </h1>
             </div>
             <div className="flex flex-col items-end justify-end">
               <h3 className="text-gray-800 text-right">
@@ -129,6 +159,7 @@ function App() {
           </div>
         )}
       </div>
+
       <div className="mx-auto max-w-4xl">
         {isForm ? (
           <Form
@@ -146,13 +177,30 @@ function App() {
             showForm={showForm}
           />
         ) : (
-          <Preview
-            partyName={partyName}
-            date={date}
-            items={items}
-            remarks={remarks}
-            showForm={showForm}
-          />
+          <div>
+            <Preview
+              partyName={partyName}
+              date={date}
+              items={items}
+              remarks={remarks}
+              showForm={showForm}
+              type={invoiceType}
+            />
+            <div className="flex gap-4 py-4 print:hidden">
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => showForm(true)}
+              >
+                Back to Form
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                onClick={resetForm}
+              >
+                New Invoice
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

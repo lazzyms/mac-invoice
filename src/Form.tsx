@@ -48,6 +48,11 @@ export default function Form({
                 value={date}
                 displayFormat={"DD/MM/YYYY"}
                 onChange={handleValueChange}
+                classNames={{
+                  input: () => "border rounded-lg shadow p-2 text-sm",
+                  container: () => "flex items-center justify-center",
+                  toggleButton: () => "p-2",
+                }}
               />
             </div>
             <div>
@@ -108,18 +113,12 @@ export default function Form({
                   scope="col"
                   className="relative py-3.5 pl-3 pr-4 sm:pr-"
                 >
-                  <button
-                    type="button"
-                    className="rounded-full  px-3.5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    onClick={insertItem}
-                  >
-                    + Add
-                  </button>
+                  Action
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {items.map((item) => (
+              {items.map((item, i) => (
                 <tr key={item.id} className="divide-x">
                   <td
                     key={`${item.id}-desc`}
@@ -140,7 +139,7 @@ export default function Form({
                             e.target.value
                           )
                         }
-                        defaultValue={item.description}
+                        value={item.description}
                         placeholder="Add name or description"
                       />
                     ) : (
@@ -167,7 +166,7 @@ export default function Form({
                         onChange={(e) =>
                           handleChangeItem(item.id, "qty", e.target.value)
                         }
-                        defaultValue={item.qty}
+                        value={item.qty}
                         placeholder="Add item Qty"
                       />
                     ) : (
@@ -194,7 +193,7 @@ export default function Form({
                         onChange={(e) =>
                           handleChangeItem(item.id, "price", e.target.value)
                         }
-                        defaultValue={item.price}
+                        value={item.price}
                         placeholder="Add item unit price ₹"
                       />
                     ) : (
@@ -207,13 +206,13 @@ export default function Form({
                     )}
                   </td>
                   <td
-                    key={`label-price`}
+                    key={`${item.id}-price`}
                     className="whitespace-nowrap p-4 text-sm font-medium text-gray-900"
                   >
                     ₹{item.price * item.qty}
                   </td>
                   <td
-                    key={`label-price`}
+                    key={`${item.id}-price`}
                     className="whitespace-nowrap text-sm font-medium text-gray-900 sm:pl-0"
                   >
                     <div className="flex gap-1 p-4">
@@ -241,6 +240,15 @@ export default function Form({
                       >
                         Delete
                       </button>
+                      {i == items.length - 1 && (
+                        <button
+                          type="button"
+                          className="rounded-full  px-3.5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                          onClick={insertItem}
+                        >
+                          + Add
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
